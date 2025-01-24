@@ -27,7 +27,7 @@ const registerUser = function(req, res) {
                                 password: hash,
                                 image: 'images/' + req.file.filename
                             });
-                            res.redirect('user/login')
+                            res.redirect('/chat/connects');
                         }
                     })
                 }
@@ -59,7 +59,7 @@ const loginUser = async function(req, res){
                         if(err) throw err;
                         else{
                             res.cookie('token', token);
-                            res.redirect('/home');
+                            res.redirect('/chat/connects');
                         }
                     })  
                 }
@@ -80,7 +80,7 @@ const loginUser = async function(req, res){
 const logout = function(req, res) {
     try {
         res.clearCookie('token');
-        res.redirect('/login');
+        res.redirect('user/login');
     } catch (error) {
         console.log(error.message);
     }
