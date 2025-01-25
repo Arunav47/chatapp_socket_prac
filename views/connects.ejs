@@ -1,80 +1,61 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Home</title>
-    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.2/socket.io.js"
-      integrity="sha512-VJ6+sp2E5rFQk05caiXXzQd1wBABpjEj1r5kMiLmGAAgwPItw1YpqsCCBtq8Yr1x6C49/mTpRdXtq8O2RcZhlQ=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <link rel="stylesheet" href="/stylesheets/style.css" />
-  </head>
-  <body>
-    <div>
-        <h1> Hi <%=user.username%></h1>
-    </div>
-    <div class="flex gap-4">
-      <div class="inline-block">
-        <h1>Connects</h1>
-        <% if (connects.length > 0) { %>
-        <ul class="connects inline-block">
-          <% for (let i = 0; i < connects.length; i++) { %>
-          <li id="<%= connects[i].username %>" class="user-item">
-            <h2>
-              <button
-                id="<%= connects[i].username %>"
-                onclick="handleClick('<%= connects[i].username %>')"
-              >
-                <%= connects[i].username %>
-              </button>
-            </h2>
-            <h3><%= connects[i].status == true ? "Online" : "Offline" %></h3>
-          </li>
-          <% } %>
+<%- include('layouts/header.ejs') %>
+
+<h2 class="mb-4">Hello <%=user.username%></h2>
+
+<div class = "row">
+    <div class="col-md-3">
+        <h3>Connects</h3>
+        <ul>
+            <% connects.forEach(function(connect) { %>
+                <li class ="user-list p-2 bg-zinc-500 text-white rounded-md border-2 border-zinc-700 cursor-pointer">
+                    <img src="<%= 'http://127.0.0.1:9000/'+connect.image%>" alt="" width="50px" height="50px" class="inline-block rounded-full">
+                    <%=connect.username%>
+                </li>
+            <% }) %>
         </ul>
-        <% } else { %>
-        <h2>No connects found</h2>
-        <% } %>
-      </div>
-      <div class="inline-block display-none card-container">
-      </div>
     </div>
-    <script>
-        let socket = io('/user', {
-                auth : {
-                    token : '<%= user.username %>'
-                }
-            }
-        );
-        
-      function handleClick(name) {
-        const card=`<div class="card">
-          <div class="chat-header">
-            Chat
-          </div>
-          <div class="chat-window">
-            <ul class="message-list"></ul>
-          </div>
-          <div class="chat-input">
-            <input
-              type="text"
-              class="message-input"
-              placeholder="Type your message here"
-            />
-            <button class="send-button">Send</button>
-          </div>
-        </div>`;
-        const cardContainer = document.querySelector('.card-container');
-        if (cardContainer.innerHTML != '') {
-          cardContainer.innerHTML = '';
-        } else {
-          cardContainer.innerHTML = card;
-        }
-      }
-    </script>
-  </body>
-</html>
+    <div class="col-md-9">
+        <h3 class="start-head m-2">Click to start chat</h3>
+        <div class="chat-section">
+            <div class="chat-area m-2 p-2 rounded-md">
+            </div>
+            <form action="" class="chat-form">
+                <input type="text" name="message" class="w-7/8 border-2 p-2 m-2 border-zinc-900 rounded-md" placeholder="Type a message">
+                <input type="submit" value="Send" class="bg-blue-500 text-white pt-2 pb-2 pl-3 pr-3 m-2 rounded-md cursor-pointer">
+            </form>
+        </div>
+    </div>
+
+
+</div>
+
+<script>
+    const chatSection = document.querySelector('.chat-section');
+    const chatForm = document.querySelector('.chat-form');
+    const chatArea = document.querySelector('.chat-area');
+    const connects = document.querySelectorAll('.user-list');
+    const startHead = document.querySelector('.start-head');
+
+    connects.forEach(function(connect) {
+        connect.addEventListener('click', function() {
+            startHead.style.display = 'none';
+            chatSection.style.display = 'block';
+        });
+    });
+
+    chatForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const message = chatForm.message.value;
+        chatForm.message.value = '';
+        chatArea.innerHTML += `<p>${message}</p>`;
+    });
+</script>
+
+<!-- <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Your script code here
+    console.log('Script is working!');
+  });
+</script> -->
+
+<%- include('layouts/footer.ejs') %>

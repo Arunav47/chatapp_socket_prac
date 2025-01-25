@@ -11,28 +11,34 @@ const register = function(req, res) {
     }
 }
 
-const registerUser = function(req, res) {
+const registerUser = async function(req, res) {
     try {
-        bcrypt.genSalt(10, function(err, salt){
-            bcrypt.hash(req.body.password, salt, async function(err, hash){
-                if(err) throw err;
-                else{
-                    jwt.sign({username : req.body.username, user_id : req.body.user_id}, process.env.JWT_SECRET, async function(err, token){
-                        if(err) throw err;
-                        else{
-                            res.cookie('token', token)
-                            const user = await userSchema.create({
-                                username: req.body.username,
-                                email: req.body.email,
-                                password: hash,
-                                image: 'images/' + req.file.filename
-                            });
-                            res.redirect('/chat/connects');
-                        }
-                    })
-                }
+        let user = await userSchema.findOne({email : req.body.email})
+        if(user){
+            res.redirect('/user/login');
+        }
+        else {
+            bcrypt.genSalt(10, function(err, salt){
+                bcrypt.hash(req.body.password, salt, async function(err, hash){
+                    if(err) throw err;
+                    else{
+                        const user = await userSchema.create({
+                            username: req.body.username,
+                            email: req.body.email,
+                            password: hash,
+                            image: 'images/' + req.file.filename
+                        });
+                        jwt.sign({username : user.username, user_id : user._id}, process.env.JWT_SECRET, function(err, token){
+                            if(err) throw err;
+                            else{
+                                res.cookie('token', token)
+                                res.redirect('/chat/connects');
+                            }
+                        })
+                    }
+                })
             })
-        })
+        }
         
     } catch (error) {
         console.log(error.message);
@@ -55,7 +61,7 @@ const loginUser = async function(req, res){
             bcrypt.compare(req.body.password, user.password, function(err, result){
                 if(err) throw err;
                 else if(result){
-                    jwt.sign({username : user.username, user_id : user.user_id}, process.env.JWT_SECRET, function(err, token){
+                    jwt.sign({username : user.username, user_id : user._id}, process.env.JWT_SECRET, function(err, token){
                         if(err) throw err;
                         else{
                             res.cookie('token', token);

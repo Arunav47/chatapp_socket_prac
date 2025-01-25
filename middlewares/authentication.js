@@ -12,7 +12,7 @@ const authCheck = function() {
                 } else {
                     if (decoded) {
                         req.user = decoded;
-                        console.log("User authenticated:", req.user);
+                        // console.log("User authenticated:", req.user);
                         next();
                     }
                 }
