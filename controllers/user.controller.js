@@ -64,12 +64,12 @@ const loginUser = async function(req, res){
                     })  
                 }
                 else{
-                    res.redirect('user/login');
+                    res.redirect('/user/login');
                 }
             })
         }
         else{
-            res.redirect('user/login');
+            res.redirect('/user/login');
         }
     }
     catch (error) {
@@ -80,7 +80,7 @@ const loginUser = async function(req, res){
 const logout = function(req, res) {
     try {
         res.clearCookie('token');
-        res.redirect('user/login');
+        res.redirect('/user/login');
     } catch (error) {
         console.log(error.message);
     }
