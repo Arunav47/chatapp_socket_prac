@@ -86,6 +86,8 @@ const logout = function(req, res) {
     }
 }
 
+
+
 module.exports = {
     register,
     registerUser,

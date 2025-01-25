@@ -14,6 +14,9 @@
     <link rel="stylesheet" href="/stylesheets/style.css" />
   </head>
   <body>
+    <div>
+        <h1> Hi <%=user.username%></h1>
+    </div>
     <div class="flex gap-4">
       <div class="inline-block">
         <h1>Connects</h1>
@@ -41,6 +44,13 @@
       </div>
     </div>
     <script>
+        let socket = io('/user', {
+                auth : {
+                    token : '<%= user.username %>'
+                }
+            }
+        );
+        
       function handleClick(name) {
         const card=`<div class="card">
           <div class="chat-header">
