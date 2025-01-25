@@ -1,11 +1,8 @@
 const express = require('express')
 const router = express.Router()
-const authCheck = require('../middlewares/authentication')
 const chatController = require('../controllers/chat.controller')
+const authenticate = require('../middleware/auth')
 
-
-
-router.get('/connects', authCheck(), chatController.getConnects)
-
+router.get('/connects', authenticate, chatController.getConnects)
 
 module.exports = router;
