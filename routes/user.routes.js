@@ -5,15 +5,12 @@ const router = express.Router()
 const bodyParser = require('body-parser')
 const userController = require('../controllers/user.controller')
 const cookieParser = require('cookie-parser');
-
-
+const authenticate = require('../middleware/auth');
 
 router.use(bodyParser.json())
 router.use(cookieParser())
 router.use(bodyParser.urlencoded({ extended: true }))
 router.use(express.static('public'))
-
-
 
 const storage = multer.diskStorage({
     destination : function(req, file, cb){
@@ -32,6 +29,7 @@ router.post('/register', upload.single('image'), userController.registerUser)
 router.get('/login', userController.login)
 router.post('/login', userController.loginUser)
 router.get('/logout', userController.logout)
+router.get('/profile', authenticate, userController.getProfile)
 
 module.exports = router;
 

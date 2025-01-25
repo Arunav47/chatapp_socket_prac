@@ -1,0 +1,19 @@
+<%- include('layouts/header.ejs') %>
+
+<h2 class="mb-4">Profile</h2>
+
+<div class="profile-details p-4 bg-gray-100 rounded-md shadow-md">
+    <img src="<%= 'http://127.0.0.1:9000/' + user.image %>" alt="Profile Image" width="100px" height="100px" class="rounded-full mb-4">
+    <p><strong>Username:</strong> <%= user.username %></p>
+    <p><strong>Email:</strong> <%= user.email %></p>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('sidebarCollapse').addEventListener('click', function () {
+            document.getElementById('sidebar').classList.toggle('active');
+        });
+    });
+</script>
+
+<%- include('layouts/footer.ejs') %>

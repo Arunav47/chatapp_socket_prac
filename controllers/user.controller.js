@@ -92,12 +92,21 @@ const logout = function(req, res) {
     }
 }
 
-
+const getProfile = function(req, res) {
+    try {
+        console.log(`Prof${req.user}`);
+        res.render('profile', { user: req.user });
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send("Server Error");
+    }
+}
 
 module.exports = {
     register,
     registerUser,
     login,
     loginUser,
-    logout
+    logout,
+    getProfile
 }

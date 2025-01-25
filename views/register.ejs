@@ -6,7 +6,7 @@
     <title>Register</title>
 </head>
 <body>
-    <h1>Regiter</h1>
+    <h1>Register</h1>
     <div>
         <form action="/user/register" method="post" enctype="multipart/form-data">
             <input type="text" name = "username" placeholder="Username" required>
@@ -19,6 +19,7 @@
             <br><br>
             <input type="submit" value="Register">
         </form>
+        <button onclick="window.location.href='/user/login'">Already have an account? Login</button>
     </div>
 </body>
 </html>
