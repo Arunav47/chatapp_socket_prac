@@ -1,5 +1,6 @@
 const dotenv = require('dotenv');
 const http = require('http');
+const path = require('path');
 const express = require('express');
 const connectDB  = require('./config/mongo_db_connect');
 const userRoutes = require('./routes/user.routes');
@@ -11,6 +12,7 @@ dotenv.config();
 const app = express();
 
 app.set('view engine', 'ejs');
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Connect to MongoDB
 connectDB(process.env.MONGO_URL);
