@@ -25,11 +25,16 @@
             </form>
         </div>
     </div>
-
-
 </div>
 
 <script>
+    let socket = io('/user', {
+        auth : {
+            token : '<%=user._id%>'
+        }
+    });
+
+    
     const chatSection = document.querySelector('.chat-section');
     const chatForm = document.querySelector('.chat-form');
     const chatArea = document.querySelector('.chat-area');
@@ -47,15 +52,8 @@
         e.preventDefault();
         const message = chatForm.message.value;
         chatForm.message.value = '';
-        chatArea.innerHTML += `<p>${message}</p>`;
+        chatArea.innerHTML += `<p>You: ${message}</p>`;
     });
 </script>
-
-<!-- <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    // Your script code here
-    console.log('Script is working!');
-  });
-</script> -->
 
 <%- include('layouts/footer.ejs') %>

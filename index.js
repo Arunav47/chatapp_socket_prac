@@ -33,12 +33,12 @@ let user_namespace = io.of('/user');
 
 user_namespace.on('connection', async function(socket) {
     console.log('User connected');
+    console.log(socket.handshake.auth.token);
 
     await userModels.findOneAndUpdate({username : socket.handshake.auth.token}, {status : true});
-
     socket.on('disconnect', async () =>{
         console.log('User disconnected');
-        
+
         await userModels.findOneAndUpdate({username : socket.handshake.auth.token}, {status : false});
 
     })

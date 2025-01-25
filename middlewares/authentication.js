@@ -7,19 +7,16 @@ const authCheck = function() {
         if (token) {
             jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
                 if (err) {
-                    res.status(401).json({ message: "Unauthorized" });
-                    res.redirect('user/login');
+                    res.redirect('/user/login');
                 } else {
                     if (decoded) {
                         req.user = decoded;
-                        // console.log("User authenticated:", req.user);
                         next();
                     }
                 }
             });
         } else {
-            res.status(401).json({ message: "Unauthorized" });
-            res.redirect('user/login');
+            res.redirect('/user/login');
         }
     };
 };

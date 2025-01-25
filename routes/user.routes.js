@@ -5,6 +5,7 @@ const router = express.Router()
 const bodyParser = require('body-parser')
 const userController = require('../controllers/user.controller')
 const cookieParser = require('cookie-parser');
+const authCheck = require('../middlewares/authentication')
 
 
 
